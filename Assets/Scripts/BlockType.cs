@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockType : MonoBehaviour
+public enum BlockType 
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    Nothing,
+    Air,
+    Grass_Dirt,
+    Dirt,
+    Grass_Stone,
+    Stone,
+    TreeTrunk,
+    TreeLeafsSolid,
+    TreeLeafsTransparent,
+    Water,
+    Sand
 }

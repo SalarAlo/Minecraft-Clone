@@ -18,7 +18,7 @@ public class ChunkRenderer : MonoBehaviour
     private ChunkData chunkData;
 
     private void Awake() {
-        meshFilter = GetComponent<MeshFilter>();
+        meshFilter = GetComponent<MeshFilter>(); 
         meshRenderer = GetComponent<MeshRenderer>();
         meshCollider = GetComponent<MeshCollider>();
         mesh = meshFilter.mesh;
@@ -27,20 +27,13 @@ public class ChunkRenderer : MonoBehaviour
     private void RenderMesh(MeshData meshData) {
         mesh.Clear();
 
-        // water can also exist
-        // Each sub-mesh corresponds to a Material in a Renderer. A submesh consist of a list of triangles which refers to the vertices.
         mesh.subMeshCount = 2;
-        
-        // becouse we also include water when setting its triangles we need to refer to its vertices. Thus we concatenate it to the main vertices
+
         mesh.vertices = meshData.vertices.Concat(meshData.waterMesh.vertices).ToArray();
 
-        // define the shapes of our via triangles (arrays of indicees of our verts). second arg is like sub mesh layer so which mesh we're refering to
         mesh.SetTriangles(meshData.triangles.ToArray(), 0);
-        // this is for subMesh 1 (water) we get the vertex of the water mesh and offset them by meshData.verts.Count becouse they are concatenated
-        // to the normal vertices in our mesh
         mesh.SetTriangles(meshData.waterMesh.triangles.Select(vertexInd => vertexInd + meshData.vertices.Count).ToArray(), 1);
 
-        // concatenate for water again
         mesh.uv = meshData.uv.Concat(meshData.waterMesh.uv).ToArray();
         mesh.RecalculateNormals();
 
@@ -50,9 +43,8 @@ public class ChunkRenderer : MonoBehaviour
             vertices = meshData.colliderVertices.ToArray(),
             triangles = meshData.colliderTriangles.ToArray()
         };
-
+        
         collisionMesh.RecalculateNormals();
-
         meshCollider.sharedMesh = collisionMesh;
     }
 
