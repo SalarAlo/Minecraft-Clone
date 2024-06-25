@@ -11,6 +11,7 @@ public static class BlockHelper
         Direction.left,
         Direction.right,
     };
+    // TODO: Actually understand the functions and rename the function names
 
     public static Vector2Int GetTexturePosition(Direction direction, BlockType blockType) {
         TextureData blockTextureData = BlockDataManager.blockTextureDataDict[blockType];
@@ -23,8 +24,11 @@ public static class BlockHelper
     }
 
     public static MeshData GetMeshData
-        (ChunkData chunk, int x, int y, int z, MeshData meshData, BlockType blockType)
+        (ChunkData chunk, Vector3Int pos, MeshData meshData, BlockType blockType)
     {
+        int x = pos.x;
+        int y = pos.y;
+        int z = pos.z;
         if (blockType == BlockType.Air || blockType == BlockType.Nothing)
             return meshData;
 

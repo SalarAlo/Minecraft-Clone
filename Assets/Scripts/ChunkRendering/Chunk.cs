@@ -30,14 +30,16 @@ public static class Chunk
     }
 
     /// <summary>
-    ///     retrieve a block of a certain pos within a chunk 
+    ///     retrieve a block of a local position within a chunk 
     /// </summary>
     /// <param name="chunkData"></param>
     /// <param name="pos"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     public static BlockType GetBlockFromChunkCoords(ChunkData chunkData, Vector3Int pos) {
-        if(!InRange(chunkData, pos)) throw new Exception("Need to ask world for appropiate Chunk");
+        if(!InRange(chunkData, pos)) {
+            return chunkData.worldRef.GetBlockFromChunkCoords(chunkData, new Vector3Int(chunkData.worldPos.x + pos.x, chunkData.worldPos.y + pos.y, chunkData.worldPos.y + pos.y));
+        }
 
         int index = GetIndexFromChunkPosition(chunkData, pos);
         return chunkData.blocks[index];
@@ -114,8 +116,18 @@ public static class Chunk
     public static MeshData GetChunkMeshData(ChunkData chunkData) {
         MeshData meshData = new(true);
 
-        // TODO: Fill later
+        LoopThroughChunk(chunkData, (pos) => {
+            meshData = BlockHelper.GetMeshData(chunkData, pos, meshData, chunkData.blocks[GetIndexFromChunkPosition(chunkData, pos)]);
+        });
 
         return meshData;
+    }
+
+    internal static Vector3Int GlobalPositionToChunkPosition(World world, Vector3Int pos) {
+        return new() {
+            x = Mathf.FloorToInt(pos.x / (float)world.GetChunkSize()) * world.GetChunkSize(),
+            y = Mathf.FloorToInt(pos.y / (float)world.GetChunkHeight()) * world.GetChunkHeight(),
+            z = Mathf.FloorToInt(pos.z / (float)world.GetChunkSize()) * world.GetChunkSize(),
+        };
     }
 }
