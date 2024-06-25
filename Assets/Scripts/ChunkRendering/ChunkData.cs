@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 
 public class ChunkData 
 {
+    // 1d array to represent 3d space becouse more performant
     public BlockType[] blocks;
     public int chunkSize = 16;
     public int chunkHeight = 100;
