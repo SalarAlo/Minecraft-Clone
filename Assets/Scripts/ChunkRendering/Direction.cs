@@ -4,7 +4,7 @@ public enum Direction
 {
     forward, // z
     right, // x
-    backwards, // -z
+    back, // -z
     left, // -x
     up, // y
     down, // -y

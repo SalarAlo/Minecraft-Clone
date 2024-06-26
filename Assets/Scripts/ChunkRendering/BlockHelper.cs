@@ -1,41 +1,30 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public static class BlockHelper 
-{ 
-    private static Direction[] directions = {
+public static class BlockHelper
+{
+    private static Direction[] directions =
+    {
+        Direction.back,
         Direction.down,
-        Direction.up,
         Direction.forward,
-        Direction.backwards,
         Direction.left,
         Direction.right,
+        Direction.up
     };
-    // TODO: Actually understand the functions and rename the function names
-
-    public static Vector2Int GetTexturePosition(Direction direction, BlockType blockType) {
-        TextureData blockTextureData = BlockDataManager.blockTextureDataDict[blockType];
-
-        return direction switch {
-            Direction.up => blockTextureData.up,
-            Direction.down => blockTextureData.down,
-            _ => blockTextureData.side
-        };
-    }
 
     public static MeshData GetMeshData
         (ChunkData chunk, Vector3Int pos, MeshData meshData, BlockType blockType)
     {
-        int x = pos.x;
-        int y = pos.y;
-        int z = pos.z;
+
         if (blockType == BlockType.Air || blockType == BlockType.Nothing)
             return meshData;
 
         foreach (Direction direction in directions)
         {
-            var neighbourBlockCoordinates = new Vector3Int(x, y, z) + direction.GetVector();
-            var neighbourBlockType = Chunk.GetBlockFromChunkCoords(chunk, neighbourBlockCoordinates);
+            var neighbourBlockCoordinates = pos + direction.GetVector();
+            var neighbourBlockType = Chunk.GetBlockFromLocalChunkCoordinates(chunk, neighbourBlockCoordinates);
 
             if (neighbourBlockType != BlockType.Nothing && BlockDataManager.blockTextureDataDict[neighbourBlockType].isSolid == false)
             {
@@ -43,11 +32,11 @@ public static class BlockHelper
                 if (blockType == BlockType.Water)
                 {
                     if (neighbourBlockType == BlockType.Air)
-                        meshData.waterMesh = GetFaceDataIn(direction, chunk, x, y, z, meshData.waterMesh, blockType);
+                        meshData.waterMesh = GetFaceDataIn(direction, chunk, pos, meshData.waterMesh, blockType);
                 }
                 else
                 {
-                    meshData = GetFaceDataIn(direction, chunk, x, y, z, meshData, blockType);
+                    meshData = GetFaceDataIn(direction, chunk, pos, meshData, blockType);
                 }
 
             }
@@ -56,23 +45,27 @@ public static class BlockHelper
         return meshData;
     }
 
-    public static MeshData GetFaceDataIn(Direction direction, ChunkData chunk, int x, int y, int z, MeshData meshData, BlockType blockType)
+    public static MeshData GetFaceDataIn(Direction direction, ChunkData chunk, Vector3Int pos, MeshData meshData, BlockType blockType)
     {
-        GetFaceVertices(direction, x, y, z, meshData, blockType);
+        GetFaceVertices(direction, pos, meshData, blockType);
         meshData.AddQuadTriangles(BlockDataManager.blockTextureDataDict[blockType].generatesCollider);
         meshData.uv.AddRange(FaceUVs(direction, blockType));
 
 
         return meshData;
     }
-    
-    public static void GetFaceVertices(Direction direction, int x, int y, int z, MeshData meshData, BlockType blockType)
+
+    public static void GetFaceVertices(Direction direction, Vector3Int pos, MeshData meshData, BlockType blockType)
     {
+        int x = pos.x;
+        int y = pos.y;
+        int z = pos.z;
+
         var generatesCollider = BlockDataManager.blockTextureDataDict[blockType].generatesCollider;
         //order of vertices matters for the normals and how we render the mesh
         switch (direction)
         {
-            case Direction.backwards:
+            case Direction.back:
                 meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f), generatesCollider);
                 meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), generatesCollider);
                 meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), generatesCollider);
@@ -117,7 +110,7 @@ public static class BlockHelper
     public static Vector2[] FaceUVs(Direction direction, BlockType blockType)
     {
         Vector2[] UVs = new Vector2[4];
-        var tilePos = GetTexturePosition(direction, blockType);
+        var tilePos = TexturePosition(direction, blockType);
 
         UVs[0] = new Vector2(BlockDataManager.tileSizeX * tilePos.x + BlockDataManager.tileSizeX - BlockDataManager.textureOffset,
             BlockDataManager.tileSizeY * tilePos.y + BlockDataManager.textureOffset);
@@ -132,5 +125,15 @@ public static class BlockHelper
             BlockDataManager.tileSizeY * tilePos.y + BlockDataManager.textureOffset);
 
         return UVs;
+    }
+
+    public static Vector2Int TexturePosition(Direction direction, BlockType blockType)
+    {
+        return direction switch
+        {
+            Direction.up => BlockDataManager.blockTextureDataDict[blockType].up,
+            Direction.down => BlockDataManager.blockTextureDataDict[blockType].down,
+            _ => BlockDataManager.blockTextureDataDict[blockType].side
+        };
     }
 }

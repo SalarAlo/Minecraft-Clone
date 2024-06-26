@@ -9,7 +9,7 @@ public static class DirectionExtensions
             Direction.right => Vector3Int.right,
             Direction.left => Vector3Int.left,
             Direction.forward => Vector3Int.forward,
-            Direction.backwards => Vector3Int.back,
+            Direction.back => Vector3Int.back,
             _ => throw new System.Exception()
         };
     }
