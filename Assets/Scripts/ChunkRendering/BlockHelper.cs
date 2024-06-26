@@ -24,7 +24,7 @@ public static class BlockHelper
         foreach (Direction direction in directions)
         {
             var neighbourBlockCoordinates = pos + direction.GetVector();
-            var neighbourBlockType = Chunk.GetBlockFromLocalChunkCoordinates(chunk, neighbourBlockCoordinates);
+            var neighbourBlockType = Chunk.GetBlock(chunk, neighbourBlockCoordinates);
 
             if (neighbourBlockType != BlockType.Nothing && BlockDataManager.blockTextureDataDict[neighbourBlockType].isSolid == false)
             {
