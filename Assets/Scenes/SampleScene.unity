@@ -679,13 +679,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a1761fda381d941828c710cfa26d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSizeInChunks: 8
+  mapSizeInChunks: 40
   chunkSize: 16
   chunkHeight: 100
   waterThreshold: 39
   noiseScale: 0.02
-  chunkPrefab: {fileID: 8179826324775858555, guid: d554956c43ee40549910ac1d410bd4dc, type: 3}
-  seed: 900
+  chunkRendererPrefab: {fileID: 8179826324775858554, guid: d554956c43ee40549910ac1d410bd4dc, type: 3}
+  seed: 9127
 --- !u!4 &1818849375
 Transform:
   m_ObjectHideFlags: 0
@@ -738,7 +738,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 30, y: -30}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1979173665

@@ -71,7 +71,7 @@ public static class Chunk
             return chunkData.blocks[index];
         }
 
-        return chunkData.worldRef.GetBlockTypeFromWorldBlockPos(new(chunkData.worldPos.x + pos.x, chunkData.worldPos.y + pos.y, chunkData.worldPos.z + pos.z));
+        return chunkData.worldRef.GetBlockTypeFromBlockPos(new(chunkData.worldPos.x + pos.x, chunkData.worldPos.y + pos.y, chunkData.worldPos.z + pos.z));
     }
 
     /// <summary>
@@ -129,9 +129,12 @@ public static class Chunk
     public static MeshData GetChunkMeshData(ChunkData chunkData) {
         MeshData meshData = new MeshData(true);
 
-        LoopThroughChunkBlocks(chunkData, 
-            (pos) => meshData = BlockHelper.GetMeshData(chunkData, pos, meshData, chunkData.blocks[GetIndexFromLocalBlockChunkPosition(chunkData, pos)])
-        );
+        void BlockIteratorFunc(Vector3Int position) {
+            int blockIndex = GetIndexFromLocalBlockChunkPosition(chunkData, position);
+            meshData = BlockHelper.GetBlockMeshData(chunkData, position, meshData, chunkData.blocks[blockIndex]);
+        }
+
+        LoopThroughChunkBlocks(chunkData, BlockIteratorFunc);
 
         return meshData;
     }

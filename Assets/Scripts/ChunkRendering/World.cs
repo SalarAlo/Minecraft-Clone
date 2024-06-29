@@ -9,7 +9,7 @@ public class World : MonoBehaviour
     [SerializeField] private int chunkSize = 16, chunkHeight = 100;
     [SerializeField] private int waterThreshold;
     [SerializeField] private float noiseScale = .03f;
-    [SerializeField] private GameObject chunkPrefab;
+    [SerializeField] private ChunkRenderer chunkRendererPrefab;
 
     private Dictionary<Vector3Int, ChunkData> chunkDataDict = new Dictionary<Vector3Int, ChunkData>();
     private Dictionary<Vector3Int, ChunkRenderer> chunkRendererDict = new Dictionary<Vector3Int, ChunkRenderer>();
@@ -54,12 +54,10 @@ public class World : MonoBehaviour
     }
 
     private void CreateChunkRenderer(ChunkData chunkData) {
-        MeshData meshData = Chunk.GetChunkMeshData(chunkData);
-        GameObject chunkObj = Instantiate(chunkPrefab, chunkData.worldPos, Quaternion.identity);
-        ChunkRenderer chunkRenderer = chunkObj.GetComponent<ChunkRenderer>();
-        chunkRendererDict.Add(chunkData.worldPos, chunkRenderer);
+        var chunkRenderer = Instantiate(chunkRendererPrefab, chunkData.worldPos, Quaternion.identity);
         chunkRenderer.SetChunkData(chunkData);
-        chunkRenderer.UpdateChunk(meshData);
+        chunkRenderer.UpdateChunk();
+        chunkRendererDict.Add(chunkData.worldPos, chunkRenderer);
     }
 
     /// <summary>
@@ -67,11 +65,10 @@ public class World : MonoBehaviour
     /// </summary>
     /// <param name="worldBlockPos"></param>
     /// <returns></returns>
-    public BlockType GetBlockTypeFromWorldBlockPos(Vector3Int worldBlockPos) {
+    public BlockType GetBlockTypeFromBlockPos(Vector3Int worldBlockPos) {
         Vector3Int worldChunkPos = Chunk.ConvertWorldBlockCoordToWorldChunkCoord(this, worldBlockPos);
-        ChunkData containerChunk = null;
 
-        if(!chunkDataDict.TryGetValue(worldChunkPos, out containerChunk)) {
+        if(!chunkDataDict.TryGetValue(worldChunkPos, out ChunkData containerChunk)) {
             return BlockType.Nothing;
         } else {
             Vector3Int blockInChunkCoords = Chunk.WorldBlockCoordToLocalBlockCoord(containerChunk, worldBlockPos);
