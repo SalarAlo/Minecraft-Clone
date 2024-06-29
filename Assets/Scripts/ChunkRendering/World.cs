@@ -112,15 +112,19 @@ public class World : MonoBehaviour
     /// <param name="groundPos"></param>
     /// <returns></returns>
     private BlockType GetBlockType(int y, int groundPos){
+        // wont change if y is less then groundPos 
         BlockType voxelType = BlockType.Dirt;
         if(y > groundPos) {
             if (y < waterThreshold) {
+                // y is bigger then ground but less then water so under water
                 voxelType = BlockType.Water;
             } else {
+                // y is bigger then groundPos and bigger then water so above surface
                 voxelType = BlockType.Air;
             }
-        }
+        } 
         else if (y == groundPos) {
+            // y is equivalent to ground 
             voxelType = BlockType.Grass_Dirt;
         }
         return voxelType;

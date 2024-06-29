@@ -14,20 +14,30 @@ public static class BlockHelper
         Direction.up
     };
 
-    public static MeshData GetBlockMeshData
-        (ChunkData chunk, Vector3Int pos, MeshData meshData, BlockType blockType)
+    /// <summary>
+    /// takes in meshData and adds the quads or faces to the meshData based on the new blocks type and position
+    /// </summary>
+    /// <param name="meshData"></param>
+    /// <param name="chunkData"></param>
+    /// <param name="pos"></param>
+    /// <param name="blockType"></param>
+    public static void AddBlockMeshData
+        (MeshData meshData, ChunkData chunkData, Vector3Int pos, BlockType blockType)
     {
-
+        // dont have to be rendered anyways
         if (blockType == BlockType.Air || blockType == BlockType.Nothing)
-            return meshData;
+            return;
 
         foreach (Direction direction in directions) {
             var neighbourBlockCoordinates = pos + direction.GetVector();
-            var neighbourBlockType = Chunk.GetBlock(chunk, neighbourBlockCoordinates);
-    
-            bool neighboutBlockIsInChunk = neighbourBlockType != BlockType.Nothing;
-            if(!neighboutBlockIsInChunk) continue;
+            var neighbourBlockType = Chunk.GetBlock(chunkData, neighbourBlockCoordinates);
 
+            // if block is on edge of world
+            bool neighbourBlockIsInWorld = neighbourBlockType != BlockType.Nothing;
+            if(!neighbourBlockIsInWorld) continue;
+            
+
+            // becouse if block on current dir is solid no need to add quad on that dir becouse isnt visible anyways 
             bool neighbourBlockIsSolid = BlockDataManager.blockTextureDataDict[neighbourBlockType].isSolid;
             if (neighbourBlockIsSolid) continue;
 
@@ -35,14 +45,14 @@ public static class BlockHelper
             bool neighbourBlockIsAir = neighbourBlockType == BlockType.Air;
 
             if (blockIsWater) {
+                // only need to render the water if the air is neighbour becouse then its visible to player
                 if (neighbourBlockIsAir)
                     AddQuadToMeshData(direction, pos, meshData.waterMesh, blockType);
             } else {
+                // render normal block which sticks out and is visible becouse its neighbour is not solid 
                 AddQuadToMeshData(direction, pos, meshData, blockType);
             }
         }
-
-        return meshData;
     }
 
     /// <summary>

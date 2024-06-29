@@ -131,7 +131,7 @@ public static class Chunk
 
         void BlockIteratorFunc(Vector3Int position) {
             int blockIndex = GetIndexFromLocalBlockChunkPosition(chunkData, position);
-            meshData = BlockHelper.GetBlockMeshData(chunkData, position, meshData, chunkData.blocks[blockIndex]);
+            BlockHelper.AddBlockMeshData(meshData, chunkData, position, chunkData.blocks[blockIndex]);
         }
 
         LoopThroughChunkBlocks(chunkData, BlockIteratorFunc);
