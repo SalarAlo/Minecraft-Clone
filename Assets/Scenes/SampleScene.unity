@@ -679,7 +679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a1761fda381d941828c710cfa26d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSizeInChunks: 40
+  mapSizeInChunks: 16
   chunkSize: 16
   chunkHeight: 100
   waterThreshold: 39

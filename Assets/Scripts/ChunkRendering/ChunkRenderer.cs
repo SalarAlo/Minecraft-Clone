@@ -52,10 +52,6 @@ public class ChunkRenderer : MonoBehaviour
         RenderMesh(Chunk.GetChunkMeshData(chunkData));
     }
 
-    public void UpdateChunk(MeshData meshData) {
-        RenderMesh(meshData);
-    }
-
     #if UNITY_EDITOR
         private void OnDrawGizmos() {
             if(!showGizmo) return;
@@ -69,4 +65,8 @@ public class ChunkRenderer : MonoBehaviour
     #endif
     public void SetChunkData(ChunkData chunkData) => this.chunkData = chunkData;
     public ChunkData GetChunkData() => chunkData;
+    public void SetAndRenderChunk(ChunkData chunkData) {
+        SetChunkData(chunkData);
+        UpdateChunk();
+    }
 }

@@ -14,30 +14,21 @@ public static class BlockHelper
         Direction.up
     };
 
-    /// <summary>
-    /// takes in meshData and adds the quads or faces to the meshData based on the new blocks type and position
-    /// </summary>
-    /// <param name="meshData"></param>
-    /// <param name="chunkData"></param>
-    /// <param name="pos"></param>
-    /// <param name="blockType"></param>
-    public static void AddBlockMeshData
-        (MeshData meshData, ChunkData chunkData, Vector3Int pos, BlockType blockType)
-    {
+    public static void AddBlockMeshData (MeshData meshData, ChunkData chunkData, Vector3Int localBlockPos, BlockType blockType) {
         // dont have to be rendered anyways
         if (blockType == BlockType.Air || blockType == BlockType.Nothing)
             return;
 
         foreach (Direction direction in directions) {
-            var neighbourBlockCoordinates = pos + direction.GetVector();
+            // Get the neighbour based on current direction
+            var neighbourBlockCoordinates = localBlockPos + direction.GetVector();
             var neighbourBlockType = Chunk.GetBlock(chunkData, neighbourBlockCoordinates);
 
-            // if block is on edge of world
             bool neighbourBlockIsInWorld = neighbourBlockType != BlockType.Nothing;
             if(!neighbourBlockIsInWorld) continue;
             
 
-            // becouse if block on current dir is solid no need to add quad on that dir becouse isnt visible anyways 
+            // becouse if block on current dir is solid it isnt seethrough so no need to add quad on that dir becouse isnt visible anyways 
             bool neighbourBlockIsSolid = BlockDataManager.blockTextureDataDict[neighbourBlockType].isSolid;
             if (neighbourBlockIsSolid) continue;
 
@@ -47,36 +38,20 @@ public static class BlockHelper
             if (blockIsWater) {
                 // only need to render the water if the air is neighbour becouse then its visible to player
                 if (neighbourBlockIsAir)
-                    AddQuadToMeshData(direction, pos, meshData.waterMesh, blockType);
+                    AddQuadToMeshData(direction, localBlockPos, meshData.waterMesh, blockType);
             } else {
                 // render normal block which sticks out and is visible becouse its neighbour is not solid 
-                AddQuadToMeshData(direction, pos, meshData, blockType);
+                AddQuadToMeshData(direction, localBlockPos, meshData, blockType);
             }
         }
     }
 
-    /// <summary>
-    /// Adds the needed data for a quad into the meshData
-    /// </summary>
-    /// <param name="direction"></param>
-    /// <param name="chunk"></param>
-    /// <param name="pos"></param>
-    /// <param name="meshData"></param>
-    /// <param name="blockType"></param>
-    /// <returns></returns>
     public static void AddQuadToMeshData(Direction direction, Vector3Int pos, MeshData meshData, BlockType blockType) {
         AddQuadVertices(direction, pos, meshData, blockType);
         meshData.AddQuadTriangles(BlockDataManager.blockTextureDataDict[blockType].generatesCollider);
         meshData.uv.AddRange(FaceUVs(direction, blockType));
     }
 
-    /// <summary>
-    /// Adds a quad to a meshData based on the direction provided and generates collider if blockType is collider type
-    /// </summary>
-    /// <param name="direction"></param>
-    /// <param name="pos"></param>
-    /// <param name="meshData"></param>
-    /// <param name="blockType"></param>
     public static void AddQuadVertices(Direction direction, Vector3Int pos, MeshData meshData, BlockType blockType) {
         int x = pos.x;
         int y = pos.y;

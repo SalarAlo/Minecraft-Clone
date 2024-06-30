@@ -29,9 +29,6 @@ public class World : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Clears and deletes the existing chunkData and destroys the chunkRenderes
-    /// </summary>
     private void ClearExistingChunkData() {
         chunkDataDict.Clear();
         foreach (ChunkRenderer chunkRenderer in chunkRendererDict.Values) {
@@ -40,9 +37,6 @@ public class World : MonoBehaviour
         chunkRendererDict.Clear();
     }
 
-    /// <summary>
-    /// creates chunks and fills its data with the needed blocks. chunkDataDictionary is also filled
-    /// </summary>
     private void CreateChunks() {
         for(int x = 0; x < mapSizeInChunks; x++) {
             for(int z = 0; z < mapSizeInChunks; z++) {
@@ -55,16 +49,10 @@ public class World : MonoBehaviour
 
     private void CreateChunkRenderer(ChunkData chunkData) {
         var chunkRenderer = Instantiate(chunkRendererPrefab, chunkData.worldPos, Quaternion.identity);
-        chunkRenderer.SetChunkData(chunkData);
-        chunkRenderer.UpdateChunk();
+        chunkRenderer.SetAndRenderChunk(chunkData);
         chunkRendererDict.Add(chunkData.worldPos, chunkRenderer);
     }
 
-    /// <summary>
-    /// return the type of block by retrieving its value based on its worldBlockPosition
-    /// </summary>
-    /// <param name="worldBlockPos"></param>
-    /// <returns></returns>
     public BlockType GetBlockTypeFromBlockPos(Vector3Int worldBlockPos) {
         Vector3Int worldChunkPos = Chunk.ConvertWorldBlockCoordToWorldChunkCoord(this, worldBlockPos);
 
@@ -76,10 +64,6 @@ public class World : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// takes in a chunk and populates each of its blocks with a blockType based on a procedurally generated groundPos foreach cell in the chunk
-    /// </summary>
-    /// <param name="data"></param>
     private void PopulateChunkWithBlocks(ChunkData data) {
         for(int x = 0; x < data.chunkSize; x++) {
             for(int z = 0; z < data.chunkSize; z++) {
@@ -93,24 +77,11 @@ public class World : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// returns a ground Position based on the x and z coordinates. this ground pos is generated using perlin noise 
-    /// </summary>
-    /// <param name="data"></param>
-    /// <param name="x"></param>
-    /// <param name="z"></param>
-    /// <returns></returns>
     private int GetGroundPos(ChunkData data, int x, int z) {
         float noiseValue = Mathf.PerlinNoise((data.worldPos.x + x + seed) * noiseScale, (data.worldPos.z + z + seed) * noiseScale);
         return Mathf.RoundToInt(noiseValue * chunkHeight);
     }
 
-    /// <summary>
-    /// computes a blocktype based on a ground Pos and a y pos
-    /// </summary>
-    /// <param name="y"></param>
-    /// <param name="groundPos"></param>
-    /// <returns></returns>
     private BlockType GetBlockType(int y, int groundPos){
         // wont change if y is less then groundPos 
         BlockType voxelType = BlockType.Dirt;
