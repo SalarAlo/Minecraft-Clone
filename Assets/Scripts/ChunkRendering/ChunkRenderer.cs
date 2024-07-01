@@ -1,7 +1,6 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -10,7 +9,6 @@ public class ChunkRenderer : MonoBehaviour
 {
     [SerializeField] private bool showGizmo = false;
 
-    private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
     private MeshCollider meshCollider;
     private Mesh mesh;
@@ -18,13 +16,15 @@ public class ChunkRenderer : MonoBehaviour
     private ChunkData chunkData;
 
     private void Awake() {
-        meshFilter = GetComponent<MeshFilter>(); 
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
+
         mesh = meshFilter.mesh;
     }
 
-    private void RenderMesh(MeshData meshData) {
+    private void RenderMesh() {
+        MeshData meshData = Chunk.GetChunkMeshData(chunkData);
+
         mesh.Clear();
 
         mesh.subMeshCount = 2;
@@ -48,8 +48,8 @@ public class ChunkRenderer : MonoBehaviour
         meshCollider.sharedMesh = collisionMesh;
     }
 
-    public void UpdateChunk() {
-        RenderMesh(Chunk.GetChunkMeshData(chunkData));
+    public void RenderChunk() {
+        RenderMesh();
     }
 
     #if UNITY_EDITOR
@@ -67,6 +67,6 @@ public class ChunkRenderer : MonoBehaviour
     public ChunkData GetChunkData() => chunkData;
     public void SetAndRenderChunk(ChunkData chunkData) {
         SetChunkData(chunkData);
-        UpdateChunk();
+        RenderChunk();
     }
 }

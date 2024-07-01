@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class BlockHelper
 {
-    private static Direction[] directions =
-    {
+    private static Direction[] directions = {
         Direction.back,
         Direction.down,
         Direction.forward,
@@ -14,19 +11,18 @@ public static class BlockHelper
         Direction.up
     };
 
-    public static void AddBlockMeshData (MeshData meshData, ChunkData chunkData, Vector3Int localBlockPos, BlockType blockType) {
+    public static void AddBlockMeshData(MeshData meshData, ChunkData chunkData, Vector3Int localBlockPos, BlockType blockType) {
         // dont have to be rendered anyways
-        if (blockType == BlockType.Air || blockType == BlockType.Nothing)
-            return;
+        if (blockType == BlockType.Air || blockType == BlockType.Nothing) return;
 
         foreach (Direction direction in directions) {
             // Get the neighbour based on current direction
             var neighbourBlockCoordinates = localBlockPos + direction.GetVector();
-            var neighbourBlockType = Chunk.GetBlock(chunkData, neighbourBlockCoordinates);
+            bool neighbourBlockIsTop = neighbourBlockCoordinates.y == chunkData.worldRef.GetChunkHeight();
+            var neighbourBlockType = neighbourBlockIsTop ? BlockType.Air : Chunk.GetBlock(chunkData, neighbourBlockCoordinates);
 
             bool neighbourBlockIsInWorld = neighbourBlockType != BlockType.Nothing;
             if(!neighbourBlockIsInWorld) continue;
-            
 
             // becouse if block on current dir is solid it isnt seethrough so no need to add quad on that dir becouse isnt visible anyways 
             bool neighbourBlockIsSolid = BlockDataManager.blockTextureDataDict[neighbourBlockType].isSolid;
@@ -37,8 +33,7 @@ public static class BlockHelper
 
             if (blockIsWater) {
                 // only need to render the water if the air is neighbour becouse then its visible to player
-                if (neighbourBlockIsAir)
-                    AddQuadToMeshData(direction, localBlockPos, meshData.waterMesh, blockType);
+                if (neighbourBlockIsAir) AddQuadToMeshData(direction, localBlockPos, meshData.waterMesh, blockType);
             } else {
                 // render normal block which sticks out and is visible becouse its neighbour is not solid 
                 AddQuadToMeshData(direction, localBlockPos, meshData, blockType);
@@ -78,7 +73,6 @@ public static class BlockHelper
                 meshData.AddVertex(new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), generatesCollider);
                 meshData.AddVertex(new Vector3(x - 0.5f, y - 0.5f, z - 0.5f), generatesCollider);
                 break;
-
             case Direction.right:
                 meshData.AddVertex(new Vector3(x + 0.5f, y - 0.5f, z - 0.5f), generatesCollider);
                 meshData.AddVertex(new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), generatesCollider);

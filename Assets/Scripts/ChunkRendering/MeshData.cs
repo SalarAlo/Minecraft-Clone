@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MeshData
@@ -12,7 +11,6 @@ public class MeshData
     public List<int> colliderTriangles = new List<int>();
     
     public MeshData waterMesh;
-    private bool isMainMesh;
 
     public MeshData(bool isMainMesh){
         if(isMainMesh)

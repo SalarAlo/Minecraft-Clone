@@ -679,11 +679,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a1761fda381d941828c710cfa26d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSizeInChunks: 16
+  mapSizeInChunks: 10
   chunkSize: 16
   chunkHeight: 100
   waterThreshold: 39
-  noiseScale: 0.02
+  noiseScale: 0.03
   chunkRendererPrefab: {fileID: 8179826324775858554, guid: d554956c43ee40549910ac1d410bd4dc, type: 3}
   seed: 9127
 --- !u!4 &1818849375

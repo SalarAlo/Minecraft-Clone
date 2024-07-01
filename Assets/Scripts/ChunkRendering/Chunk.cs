@@ -19,19 +19,11 @@ public static class Chunk
         return new Vector3Int(x, y, z);
     }
 
-    private static bool IsAxisCoordinateInRange(ChunkData chunkData, int axisCoordinate)
-    {
-        if (axisCoordinate < 0 || axisCoordinate >= chunkData.chunkSize)
-            return false;
-
-        return true;
+    private static bool IsAxisCoordinateInRange(ChunkData chunkData, int axisCoordinate) {
+        return axisCoordinate >= 0 && axisCoordinate < chunkData.chunkSize;
     }
-    private static bool IsYCoordinateInRange(ChunkData chunkData, int ycoordinate)
-    {
-        if (ycoordinate < 0 || ycoordinate >= chunkData.chunkHeight)
-            return false;
-
-        return true;
+    private static bool IsYCoordinateInRange(ChunkData chunkData, int yCoordinate) {
+        return yCoordinate >= 0 && yCoordinate < chunkData.chunkHeight;
     }
 
     public static BlockType GetBlock(ChunkData chunkData, Vector3Int pos) {
@@ -44,8 +36,7 @@ public static class Chunk
         return chunkData.worldRef.GetBlockTypeFromBlockPos(blockWorldCoord);
     }
 
-    public static void SetBlockInChunk(ChunkData chunkData, Vector3Int localPosition, BlockType block)
-    {
+    public static void SetBlockInChunk(ChunkData chunkData, Vector3Int localPosition, BlockType block) {
         if (IsAxisCoordinateInRange(chunkData, localPosition.x) && IsYCoordinateInRange(chunkData, localPosition.y) && IsAxisCoordinateInRange(chunkData, localPosition.z))
         {
             int index = GetIndexFromLocalBlockChunkPosition(chunkData, localPosition);
@@ -61,6 +52,7 @@ public static class Chunk
         int x = pos.x;
         int y = pos.y;
         int z = pos.z;
+
         return x + chunkData.chunkSize * y + chunkData.chunkSize * chunkData.chunkHeight * z;
     }
     
