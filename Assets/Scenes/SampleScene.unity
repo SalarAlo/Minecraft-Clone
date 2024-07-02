@@ -634,8 +634,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3b03382e2cec39458f7504a71f1fed5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterThreshold: 39
-  noiseScale: 0.03
+  waterThreshold: 10
+  noiseSettingsSO: {fileID: 11400000, guid: 474260bbd1791804ba0a61eafea9da13, type: 2}
 --- !u!4 &1308196291
 Transform:
   m_ObjectHideFlags: 0
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3a1761fda381d941828c710cfa26d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSizeInChunks: 3
+  mapSizeInChunks: 9
   chunkSize: 16
   chunkHeight: 100
   chunkRendererPrefab: {fileID: 8179826324775858554, guid: d554956c43ee40549910ac1d410bd4dc, type: 3}
