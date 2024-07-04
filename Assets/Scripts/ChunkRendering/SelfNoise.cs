@@ -22,18 +22,25 @@ public static class SelfNoise
         x *= settings.noiseZoom;
         z *= settings.noiseZoom;
 
-        float total = 0;
+        float noiseHeight = 0;
         float frequency = 1;
-        // jede layer wird immer weiter rausgezoomed wegen frequency. dh weniger details mit jeder iteration
+        float maxValue = 0;
+        float amplitude = 1;
+
+        // jede layer wird immer weiter rausgezoomed wegen frequency. dh. mehr details mit jeder iteration weil man mehr verschiedene height werte hat mit jeder iter.
         for (int i = 0; i < settings.octaves; i++) {
-            total += Mathf.PerlinNoise(
+            float perlinValueOfCurrentOctave = Mathf.PerlinNoise(
                 (settings.offset.x + settings.seed.x + x) * frequency, 
                 (settings.offset.y + settings.seed.y + z) * frequency
             );
 
-            frequency *= 2;
+            noiseHeight += perlinValueOfCurrentOctave * amplitude;
+
+            maxValue += amplitude;
+            amplitude *= settings.persistance;
+            frequency *= settings.lacunarity;
         }
 
-        return total / settings.octaves;
+        return noiseHeight / maxValue;
     }
 }

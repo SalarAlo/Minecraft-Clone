@@ -776,7 +776,7 @@ MonoBehaviour:
   chunkHeight: 100
   chunkRendererPrefab: {fileID: 8179826324775858554, guid: d554956c43ee40549910ac1d410bd4dc, type: 3}
   terrainGenerator: {fileID: 1705903896}
-  seed: {x: 0, y: 0}
+  seed: {x: 123, y: 3123}
 --- !u!4 &1818849375
 Transform:
   m_ObjectHideFlags: 0
