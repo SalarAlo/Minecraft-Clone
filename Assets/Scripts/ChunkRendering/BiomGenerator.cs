@@ -10,7 +10,7 @@ public class BiomGenerator : MonoBehaviour
     [SerializeField] private NoiseSettingsSO noiseSettingsSO;
 
     public ChunkData ProcessChunkColumn(ChunkData data, int x, int z, Vector2Int seed) {
-        noiseSettingsSO.worldOffset = seed;
+        noiseSettingsSO.seed = seed;
         int groundPos = GetGroundPos(data.chunkHeight, x + data.worldPos.x, z + data.worldPos.z);
 
         for(int y = 0; y < data.chunkHeight; y++) {
@@ -22,9 +22,10 @@ public class BiomGenerator : MonoBehaviour
     }
 
     private int GetGroundPos(int chunkHeight, int x, int z) {
-        float terrainHeight = SelfNoise.OctavePerlin(x, z, noiseSettingsSO);
-        terrainHeight = SelfNoise.Redistribution(terrainHeight, noiseSettingsSO);
-        return SelfNoise.RemapValue01ToInt(terrainHeight, 0, chunkHeight); 
+        float height = SelfNoise.OctavePerlin(x, z, noiseSettingsSO);
+        height = SelfNoise.Redistribution(height, noiseSettingsSO); 
+
+        return Mathf.FloorToInt(height * chunkHeight);
     }
 
     private BlockType GetBlockType(int y, int groundPos){
