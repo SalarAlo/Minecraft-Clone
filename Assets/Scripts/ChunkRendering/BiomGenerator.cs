@@ -8,21 +8,21 @@ public class BiomGenerator : MonoBehaviour
 
     [SerializeField] private int waterThreshold;
     [SerializeField] private NoiseSettingsSO noiseSettingsSO;
+    [SerializeField] private BlockLayerHandler startLayer;
 
     public ChunkData ProcessChunkColumn(ChunkData data, int x, int z, Vector2Int seed) {
         noiseSettingsSO.seed = seed;
         int groundPos = GetGroundPos(data.chunkHeight, x + data.worldPos.x, z + data.worldPos.z);
 
         for(int y = 0; y < data.chunkHeight; y++) {
-            BlockType voxelType = GetBlockType(y, groundPos); 
-            Chunk.SetBlockInChunk(data, new(x, y, z), voxelType);
+            startLayer.Handle(data, new(x, y, z), groundPos, seed);
         }
 
         return data;
     }
 
     private int GetGroundPos(int chunkHeight, int x, int z) {
-        float height = SelfNoise.OctavePerlin(x, z, noiseSettingsSO);
+        float height = SelfNoise.OctavePerlinNoise(x, z, noiseSettingsSO);
         height = SelfNoise.Redistribution(height, noiseSettingsSO); 
 
         return Mathf.FloorToInt(height * chunkHeight);

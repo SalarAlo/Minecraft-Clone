@@ -18,29 +18,28 @@ public static class SelfNoise
     public static float Redistribution(float noise, NoiseSettingsSO noiseSettingsSO) => 
         Mathf.Pow(noise * noiseSettingsSO.redistributionModifier, noiseSettingsSO.exponent);
     
-    public static float OctavePerlin(float x, float z, NoiseSettingsSO settings){
+    public static float OctavePerlinNoise(float x, float z, NoiseSettingsSO settings){
         x *= settings.noiseZoom;
         z *= settings.noiseZoom;
 
-        float noiseHeight = 0;
+        float noiseSum = 0;
         float frequency = 1;
-        float maxValue = 0;
+        float totalAmplitude = 0;
         float amplitude = 1;
-
-        // jede layer wird immer weiter rausgezoomed wegen frequency. dh. mehr details mit jeder iteration weil man mehr verschiedene height werte hat mit jeder iter.
+        
         for (int i = 0; i < settings.octaves; i++) {
-            float perlinValueOfCurrentOctave = Mathf.PerlinNoise(
+            float perlinValue = Mathf.PerlinNoise(
                 (settings.offset.x + settings.seed.x + x) * frequency, 
                 (settings.offset.y + settings.seed.y + z) * frequency
             );
 
-            noiseHeight += perlinValueOfCurrentOctave * amplitude;
+            noiseSum += perlinValue * amplitude;
 
-            maxValue += amplitude;
+            totalAmplitude += amplitude;
             amplitude *= settings.persistance;
             frequency *= settings.lacunarity;
         }
 
-        return noiseHeight / maxValue;
+        return noiseSum / totalAmplitude;
     }
 }
