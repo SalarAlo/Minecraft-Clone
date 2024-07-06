@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SurfaceLayerHandler : BlockLayerHandler
+public class SurfaceLayerHandler : BaseBlockLayerHandler
 {
     [SerializeField] private BlockType surfaceBlockType;
 

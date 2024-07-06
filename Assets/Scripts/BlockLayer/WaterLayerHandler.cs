@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WaterLayerHandler : BlockLayerHandler
+public class WaterLayerHandler : BaseBlockLayerHandler
 {
     public int waterLevel = 1;
     protected override bool TryHandle(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed) {

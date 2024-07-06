@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UndergroundLayerHandler : BlockLayerHandler
+public class UndergroundLayerHandler : BaseBlockLayerHandler
 {
     public BlockType undergroundBlockType;
 
