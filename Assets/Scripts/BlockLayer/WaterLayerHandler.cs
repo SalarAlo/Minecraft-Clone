@@ -1,18 +1,11 @@
 using UnityEngine;
 
-public class WaterLayerHandler : BaseBlockLayerHandler
+public class WaterLayerHandler : SingleBlockLayerHandler
 {
-    public int waterLevel = 1;
-    protected override bool TryHandle(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed) {
-        if(pos.y > surfaceHeightNoise && pos.y <= waterLevel){
-            Chunk.SetBlockInChunk(chunkData, pos, BlockType.Water);
-            if (pos.y == surfaceHeightNoise + 1) {
-                pos.y = surfaceHeightNoise;
-                Chunk.SetBlockInChunk(chunkData, pos, BlockType.Sand);
-            }
-            return true;
-        }
+    public int waterLevel = 8;
+    public WaterLayerHandler(BlockType blockType) : base(blockType) {}
 
-        return false; 
+    public override bool ShouldPlace(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed) {
+        return pos.y > surfaceHeightNoise && pos.y <= waterLevel;
     }
 }

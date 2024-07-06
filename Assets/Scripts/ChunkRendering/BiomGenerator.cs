@@ -5,11 +5,9 @@ using UnityEngine;
 
 public class BiomGenerator : MonoBehaviour
 {
-
     [SerializeField] private int waterThreshold;
     [SerializeField] private NoiseSettingsSO noiseSettingsSO;
-    [SerializeField] private BaseBlockLayerHandler startLayer;
-    [SerializeField] private List<BaseBlockLayerHandler> additionalLayerHandlers;
+    [SerializeField] private BiomHandler handler;
 
     public ChunkData ProcessChunkColumn(ChunkData data, int x, int z, Vector2Int seed) {
         noiseSettingsSO.seed = seed;
@@ -17,12 +15,12 @@ public class BiomGenerator : MonoBehaviour
         int groundPos = GetGroundPos(data.chunkHeight, x + data.worldPos.x, z + data.worldPos.z);
 
         for(int y = 0; y < data.chunkHeight; y++) {
-            startLayer.Handle(data, new(x, y, z), groundPos, seed);
+            handler.HandleSingleBlock(data, new Vector3Int(x, y, z), groundPos, seed);
         }
 
-        foreach(var layer in additionalLayerHandlers) {
-            layer.Handle(data, new(x, data.worldPos.y, z), groundPos, seed);
-        }
+        // foreach(var layer in additionalLayerHandlers) {
+        // layer.Handle(data, new(x, data.worldPos.y, z), groundPos, seed);
+        // }
 
         return data;
     }

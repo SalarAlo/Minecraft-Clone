@@ -2,13 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AirLayerHandler : BaseBlockLayerHandler
+public class AirLayerHandler : SingleBlockLayerHandler
 {
-    protected override bool TryHandle(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed) {
-        if(pos.y > surfaceHeightNoise) {
-            Chunk.SetBlockInChunk(chunkData, pos, BlockType.Air);
-            return true;
-        }
-        return false;
-    }
+    public AirLayerHandler(BlockType blockType) : base(blockType) { }
+
+    public override bool ShouldPlace(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed) => pos.y > surfaceHeightNoise;
 }

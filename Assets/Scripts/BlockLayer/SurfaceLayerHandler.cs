@@ -2,15 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SurfaceLayerHandler : BaseBlockLayerHandler
+public class SurfaceLayerHandler : SingleBlockLayerHandler
 {
     [SerializeField] private BlockType surfaceBlockType;
 
-    protected override bool TryHandle(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed) {
-        if(pos.y == surfaceHeightNoise) {
-            Chunk.SetBlockInChunk(chunkData, pos, surfaceBlockType);
-            return true;
-        }
-        return false;
-    }
+    public SurfaceLayerHandler(BlockType blockType) : base(blockType) {}
+
+    public override bool ShouldPlace(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed) => pos.y == surfaceHeightNoise;
 }
