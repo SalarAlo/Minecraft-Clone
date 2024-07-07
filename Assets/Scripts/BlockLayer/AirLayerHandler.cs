@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AirLayerHandler : SingleBlockLayerHandler
 {
-    public AirLayerHandler(BlockType blockType) : base(blockType) { }
+    public AirLayerHandler() : base(BlockType.Air) { }
 
     public override bool ShouldPlace(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed) => pos.y > surfaceHeightNoise;
 }

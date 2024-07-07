@@ -989,6 +989,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4727dbebdefca443ae8f13e78d6118b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stoneThreshold: 0.4
+  stoneNoiseSettings: {fileID: 11400000, guid: 41674119c255f5f44832b8583f38d7d9, type: 2}
 --- !u!4 &2038238514
 Transform:
   m_ObjectHideFlags: 0

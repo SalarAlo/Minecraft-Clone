@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
+    [SerializeField] private int waterLevel;
     [SerializeField] private int mapSizeInChunks = 6;
     [SerializeField] private int chunkSize = 16, chunkHeight = 100;
     [SerializeField] private ChunkRenderer chunkRendererPrefab;
@@ -12,10 +13,11 @@ public class World : MonoBehaviour
     private Dictionary<Vector3Int, ChunkRenderer> chunkRendererDict = new Dictionary<Vector3Int, ChunkRenderer>();
 
     [SerializeField] private Vector2Int seed;
+    internal Vector3Int wa;
 
     public int GetChunkSize() => chunkSize;
     public int GetChunkHeight() => chunkHeight;
-
+    public int GetWaterLevel() => waterLevel;
 
     public void GenerateWorld() {
         ClearExistingChunkData();

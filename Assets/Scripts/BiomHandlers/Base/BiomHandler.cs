@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,8 +11,14 @@ public abstract class BiomHandler : MonoBehaviour
                 break;
             }
         }
+        foreach(var additionalBlockLayer in GetAdditionalBlockLayerHandlers()) {
+            if(additionalBlockLayer.ShouldPlace(data, position, groundPos, seed)) {
+                BlockType blockType = additionalBlockLayer.GetBlockType();
+                Chunk.SetBlockInChunk(data, position, blockType);
+            }
+        }
     }
 
     protected abstract List<SingleBlockLayerHandler> GetBlockLayerHandlers();
-    protected virtual List<SingleBlockLayerHandler> GetAdditionalBlockLayerHandlers() => null;
+    protected virtual List<SingleBlockLayerHandler> GetAdditionalBlockLayerHandlers() => new List<SingleBlockLayerHandler>();
 }

@@ -11,5 +11,5 @@ public abstract class SingleBlockLayerHandler
     public BlockType GetBlockType() => blockType;
 
 
-    public abstract bool ShouldPlace(ChunkData chunkData, Vector3Int pos, int surfaceHeightNoise, Vector2Int mapSeed);
+    public abstract bool ShouldPlace(ChunkData chunkData, Vector3Int pos, int groundPos, Vector2Int mapSeed);
 }

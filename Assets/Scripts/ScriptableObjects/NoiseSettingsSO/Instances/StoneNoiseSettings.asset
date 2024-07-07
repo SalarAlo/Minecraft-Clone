@@ -16,7 +16,7 @@ MonoBehaviour:
   octaves: 1
   offset: {x: 0, y: 0}
   seed: {x: 123, y: 3123}
-  redistributionModifier: 1.2
+  redistributionModifier: 0.9
   exponent: 1
-  persistance: 0.5
-  lacunarity: 2
+  persistance: 0.9
+  lacunarity: 1
