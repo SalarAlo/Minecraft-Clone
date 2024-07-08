@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82e8f84d1a3cfe54285144d3962e9a66, type: 3}
-  m_Name: NoiseSettings
+  m_Name: NoiseSettingsDomainWarpingY
   m_EditorClassIdentifier: 
-  noiseZoom: 0.01
+  noiseZoom: 0.02
   octaves: 3
   offset: {x: 0, y: 0}
-  seed: {x: 123, y: 3123}
-  redistributionModifier: 1
-  exponent: 3
+  seed: {x: 0, y: 0}
+  redistributionModifier: 1.2
+  exponent: 5
   persistance: 0.5
   lacunarity: 2
